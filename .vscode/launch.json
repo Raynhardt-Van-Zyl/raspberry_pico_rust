@@ -2,23 +2,37 @@
     "version": "0.2.0",
     "configurations": [
         {
-            "name": "Debug Pico",
+            "name": "Debug (probe-rs)",
             "type": "probe-rs-debug",
             "request": "launch",
             "cwd": "${workspaceFolder}",
-            "chip": "rp2040",
-            "probe": "2e8a:000c:E463509597555438",
-            "speed": 4000,
+            "chip": "RP2040",
             "flashingConfig": {
                 "flashingEnabled": true,
-                "haltAfterReset": true
+                "haltAfterReset": false,
+                "formatOptions": {
+                    "binaryFormat": "elf"
+                }
             },
             "coreConfigs": [
                 {
+                    "coreIndex": 0,
                     "programBinary": "${workspaceFolder}/target/thumbv6m-none-eabi/debug/raspberry_pico_rust",
-                    "rttEnabled": true
+                    "svdFile": "${workspaceFolder}/.vscode/RP2040.svd",
+                    "rttEnabled": true,
+                    "rttChannelFormats": [
+                        {
+                            "channelNumber": 0,
+                            "dataFormat": "String",
+                            "showTimestamps": true
+                        }
+                    ]
                 }
-            ]
+            ],
+            "env": {
+                "DEFMT_LOG": "info"
+            },
+            "consoleLogLevel": "Info"
         }
     ]
 }

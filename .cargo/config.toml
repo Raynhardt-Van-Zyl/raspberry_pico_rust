@@ -1,14 +1,14 @@
 [target.'cfg(all(target_arch = "arm", target_os = "none"))']
-# Remove the probe-rs runner since we're using UF2
-# runner = "probe-rs-cli run --chip RP2040"
+runner = "probe-rs run --chip RP2040"
 
 rustflags = [
     "-C", "link-arg=--nmagic",
     "-C", "link-arg=-Tlink.x",
+    "-C", "link-arg=-Tdefmt.x",
 ]
 
 [build]
-target = "thumbv6m-none-eabi"    # Cortex-M0+ in the RP2040
+target = "thumbv6m-none-eabi"
 
 [target.thumbv6m-none-eabi]
-runner = "elf2uf2-rs"  # This will run after cargo build 
+runner = "probe-rs run --chip RP2040"

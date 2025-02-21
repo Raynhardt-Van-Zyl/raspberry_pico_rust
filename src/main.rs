@@ -15,11 +15,20 @@ use usb_device::{
 };
 use usbd_serial::SerialPort;
 
+// Add defmt imports and initialization
+use defmt::*;
+use defmt_rtt as _;
+
 #[entry]
 fn main() -> ! {
+    // Initialize defmt
+    info!("Program Started!");  // Our first debug message
+
     // Get access to the device specific peripherals
     let mut pac = pac::Peripherals::take().unwrap();
     let core = pac::CorePeripherals::take().unwrap();
+    
+    info!("Peripherals initialized");  // Debug checkpoint
     
     // Set up the watchdog driver - needed by the clock setup code
     let mut watchdog = hal::Watchdog::new(pac.WATCHDOG);
@@ -37,6 +46,8 @@ fn main() -> ! {
     .ok()
     .unwrap();
 
+    info!("Clocks configured");  // Debug checkpoint
+
     // Set up the USB driver
     let usb_bus = UsbBusAllocator::new(UsbBus::new(
         pac.USBCTRL_REGS,
@@ -45,6 +56,8 @@ fn main() -> ! {
         true,
         &mut pac.RESETS,
     ));
+
+    info!("USB bus initialized");  // Debug checkpoint
 
     let mut serial = SerialPort::new(&usb_bus);
     let usb_desc = usb_device::device::StringDescriptors::default()
@@ -59,6 +72,8 @@ fn main() -> ! {
         .max_packet_size_0(64)
         .expect("Failed to set packet size")
         .build();
+
+    info!("USB device configured");  // Debug checkpoint
 
     // The delay object lets us wait for specified amounts of time
     let mut delay = cortex_m::delay::Delay::new(
@@ -85,6 +100,8 @@ fn main() -> ! {
     let mut buf = [0u8; 64];
     let mut counter = 0u8;
 
+    info!("Entering main loop");  // Debug checkpoint before main loop
+
     loop {
         // Poll the USB device
         if !usb_dev.poll(&mut [&mut serial]) {
@@ -94,6 +111,7 @@ fn main() -> ! {
         // Check for new data
         match serial.read(&mut buf) {
             Ok(count) if count > 0 => {
+                info!("Received {} bytes of data", count);  // Debug data reception
                 // Toggle LED
                 led_state = !led_state;
                 if led_state {
@@ -147,6 +165,7 @@ fn main() -> ! {
                 continue;
             }
             Err(_) => {
+                info!("USB Error occurred");  // Debug errors
                 serial.reset();
             }
             _ => {}
