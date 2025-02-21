@@ -1,0 +1,12 @@
+{
+    "rust-analyzer.cargo.target": "thumbv6m-none-eabi",
+    "rust-analyzer.checkOnSave.allTargets": false,
+    "rust-analyzer.checkOnSave.extraArgs": [
+        "--target",
+        "thumbv6m-none-eabi"
+    ],
+    "serialmonitor.baudRate": 115200,
+    "serialmonitor.refreshDelay": 100,
+    "serialmonitor.autoConnect": false,
+    "serialmonitor.lineEnding": "\r\n"
+} 

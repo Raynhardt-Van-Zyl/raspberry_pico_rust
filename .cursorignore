@@ -1,0 +1,6 @@
+target/*
+.gitignore
+.cursorignore
+.vscode/*
+.vscode
+.vscode/

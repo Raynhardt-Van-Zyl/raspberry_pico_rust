@@ -1,0 +1,24 @@
+{
+    "version": "0.2.0",
+    "configurations": [
+        {
+            "name": "Debug Pico",
+            "type": "probe-rs-debug",
+            "request": "launch",
+            "cwd": "${workspaceFolder}",
+            "chip": "rp2040",
+            "probe": "2e8a:000c:E463509597555438",
+            "speed": 4000,
+            "flashingConfig": {
+                "flashingEnabled": true,
+                "haltAfterReset": true
+            },
+            "coreConfigs": [
+                {
+                    "programBinary": "${workspaceFolder}/target/thumbv6m-none-eabi/debug/raspberry_pico_rust",
+                    "rttEnabled": true
+                }
+            ]
+        }
+    ]
+}

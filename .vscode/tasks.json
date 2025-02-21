@@ -1,0 +1,22 @@
+{
+    "version": "2.0.0",
+    "tasks": [
+        {
+            "label": "Build and Convert to UF2",
+            "type": "shell",
+            "command": "cargo build --release; if ($?) { elf2uf2-rs target/thumbv6m-none-eabi/release/raspberry_pico_rust raspberry_pico_rust.uf2 }",
+            "options": {
+                "shell": {
+                    "executable": "powershell.exe"
+                }
+            },
+            "group": {
+                "kind": "build",
+                "isDefault": true
+            },
+            "problemMatcher": [
+                "$rustc"
+            ]
+        }
+    ]
+} 
